@@ -61,7 +61,7 @@ transform = transforms.Compose([
 
 # loader data
 dset = datasets.ImageFolder(data_dir, transform)
-train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
+train_loader = torch.utils.data.DataLoader(dset, batch_size, shuffle=True)
 temp = plt.imread(train_loader.dataset.imgs[0][0])
 if (temp.shape[0] != img_size) or (temp.shape[0] != img_size):
     sys.stderr.write('Error! image size is not 64 x 64! run \"celebA_data_preprocess.py\" !!!')
@@ -192,8 +192,8 @@ def show_train_hist(hist, show = False, save = False, path = 'Train_hist.png'):
 #        plt.close()
 
 # network init
-G = generator(128)
-D = discriminator(128)
+G = generator(batch_size)
+D = discriminator(batch_size)
 G.weight_init(mean=0.0, std=0.02)
 D.weight_init(mean=0.0, std=0.02)
 G.cuda()
