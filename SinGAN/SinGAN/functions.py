@@ -74,16 +74,16 @@ def convert_image_np_2d(inp):
     # inp = std*
     return inp
 
-def generate_noise(size, num_samp=1, device='cuda', type='gaussian', scale=1):
+def generate_noise(size, num_samp = 1, device = 'cuda', type = 'gaussian', scale = 1):
     if type == 'gaussian':
-        noise = torch.randn(num_samp, size[0], round(size[1]/scale), round(size[2]/scale), device=device)
+        noise = torch.randn(num_samp, size[0], round(size[1] / scale), round(size[2] / scale), device = device)
         noise = upsampling(noise, size[1], size[2])
     if type =='gaussian_mixture':
-        noise1 = torch.randn(num_samp, size[0], size[1], size[2], device=device)+5
-        noise2 = torch.randn(num_samp, size[0], size[1], size[2], device=device)
-        noise = noise1+noise2
+        noise1 = torch.randn(num_samp, size[0], size[1], size[2], device = device) + 5
+        noise2 = torch.randn(num_samp, size[0], size[1], size[2], device = device)
+        noise = noise1 + noise2
     if type == 'uniform':
-        noise = torch.randn(num_samp, size[0], size[1], size[2], device=device)
+        noise = torch.randn(num_samp, size[0], size[1], size[2], device = device)
     return noise
 
 def plot_learning_curves(G_loss, D_loss, epochs, label1, label2, name):
@@ -93,7 +93,7 @@ def plot_learning_curves(G_loss, D_loss, epochs, label1, label2, name):
     #plt.title('loss')
     #plt.ylabel('loss')
     plt.xlabel('epochs')
-    plt.legend([label1, label2], loc='upper right')
+    plt.legend([label1, label2], loc = 'upper right')
     plt.savefig('%s.png' % name)
     plt.close(fig)
 
@@ -107,7 +107,7 @@ def plot_learning_curve(loss, epochs, name):
     plt.close(fig)
 
 def upsampling(im, sx, sy):
-    m = nn.Upsample(size=[round(sx), round(sy)], mode='bilinear', align_corners=True)
+    m = nn.Upsample(size=[round(sx), round(sy)], mode = 'bilinear', align_corners = True)
     return m(im)
 
 def reset_grads(model, require_grad):
@@ -124,6 +124,7 @@ def move_to_cpu(t):
     t = t.to(torch.device('cpu'))
     return t
 
+# 计算梯度惩罚
 def calc_gradient_penalty(netD, real_data, fake_data, LAMBDA, device):
     #print real_data.size()
     alpha = torch.rand(1, 1)
@@ -287,8 +288,8 @@ def post_config(opt):
     opt.niter_init = opt.niter
     opt.noise_amp_init = opt.noise_amp  # 噪声权重
     opt.nfc_init = opt.nfc
-    opt.min_nfc_init = opt.min_nfc
-    opt.scale_factor_init = opt.scale_factor
+    opt.min_nfc_init = opt.min_nfc  # 32个卷积
+    opt.scale_factor_init = opt.scale_factor  #0.75
     opt.out_ = 'TrainedModels/%s/scale_factor=%f/' % (opt.input_name[:-4], opt.scale_factor)
     if opt.mode == 'SR':
         opt.alpha = 100

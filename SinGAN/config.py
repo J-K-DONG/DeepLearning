@@ -16,8 +16,8 @@ def get_arguments():
     parser.add_argument('--out', help='output folder', default='Output')
 
     #networks hyper parameters:
-    parser.add_argument('--nfc', type=int, default=32)
-    parser.add_argument('--min_nfc', type=int, default=32)
+    parser.add_argument('--nfc', type=int, help='the number of convolution kernel', default=32)
+    parser.add_argument('--min_nfc', type=int, help='the number of convolution kernel at begin', default=32)
     parser.add_argument('--ker_size', type=int, help='kernel size', default=3)
     parser.add_argument('--num_layer', type=int, help='number of conv layers', default=5)
     parser.add_argument('--stride', help='stride', default=1)
